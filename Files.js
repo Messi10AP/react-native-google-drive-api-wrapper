@@ -125,7 +125,7 @@ export default class Files {
          headers: GDrive._createHeaders()
       });
    }
-   download(fileId, downloadFileOptions, queryParams = {}, fileType) {
+   download(fileId, queryParams = {}, fileType="file") {
       queryParams.alt = "media";
       
       const parameters = _stringifyQueryParams(queryParams);
