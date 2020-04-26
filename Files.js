@@ -3,6 +3,7 @@ import {
    StaticUtils,
    ArrayStringifier
 } from "simple-common-utils";
+import * as FileSystem from 'expo-file-system';
 import GDrive from "./GDrive";
 
 const uploadUrl = "https://www.googleapis.com/upload/drive/v3/files";
@@ -124,21 +125,19 @@ export default class Files {
          headers: GDrive._createHeaders()
       });
    }
-   /*
-   download(fileId, downloadFileOptions, queryParams = {}) {
+   download(fileId, downloadFileOptions, queryParams = {}, fileType) {
       queryParams.alt = "media";
       
       const parameters = _stringifyQueryParams(queryParams);
       
-      downloadFileOptions.fromUrl = `${GDrive._urlFiles}/${fileId}${parameters}`;
+      let url = `${GDrive._urlFiles}/${fileId}${parameters}`;
       
-      downloadFileOptions.headers = Object.assign({
-         "Authorization": `Bearer ${GDrive.accessToken}`
-      }, downloadFileOptions.headers);
-      
-      return RNFS.downloadFile(downloadFileOptions);
+      return FileSystem.downloadAsync(url, FileSystem.documentDirectory + 'temp.' + fileType, {
+         headers: {
+            "Authorization": `Bearer ${GDrive.accessToken}`
+         }
+      });
    }
-   */
    list(queryParams) {
       return fetch(`${GDrive._urlFiles}${_stringifyQueryParams(queryParams)}`, {
          headers: GDrive._createHeaders()
